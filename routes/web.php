@@ -25,4 +25,7 @@ Route::put('/avisos/{post}', [PostController::class, 'update'])->name('avisos.up
 Route::delete('/avisos/{post}', [PostController::class, 'destroy'])->name('avisos.destroy');
 
 
-Route::get('/contacto', fn () => view('contacto'));
+Route::get('/contacto', fn() => view('contacto'));
+Route::post('/contacto', function () {
+    return redirect('/contacto');
+});
