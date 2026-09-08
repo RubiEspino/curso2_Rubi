@@ -27,6 +27,7 @@ class PostController extends Controller
             'contenido' => ['required'],
             'categoria_id' => ['required', 'exists:categorias,id'],
         ]);
+        $datos['user_id'] = auth()->id();
 
         Post::create($datos);
 
