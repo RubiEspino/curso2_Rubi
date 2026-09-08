@@ -45,6 +45,14 @@ class PostPolicy
         return $user->id === $post->user_id;
     }
 
+    public function before(User $user, string $ability): ?bool
+    {
+        if ($user->rol === 'admin') {
+            return true;
+        }
+
+        return null;
+    }
 
     /**
      * Determine whether the user can restore the model.

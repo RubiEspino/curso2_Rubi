@@ -14,6 +14,7 @@ class Post extends Model
 
     protected $casts = [
         'publicado' => 'boolean',
+        'user_id' => 'integer',
     ];
 
     public function categoria()

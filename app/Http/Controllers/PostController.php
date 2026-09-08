@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -27,7 +29,7 @@ class PostController extends Controller
             'contenido' => ['required'],
             'categoria_id' => ['required', 'exists:categorias,id'],
         ]);
-        $datos['user_id'] = auth()->id();
+        $datos['user_id'] = Auth::id();
 
         Post::create($datos);
 
@@ -35,6 +37,8 @@ class PostController extends Controller
     }
     public function edit(Post $post)
     {
+        Gate::authorize('update', $post);
+
         return view('avisos.editar', [
             'post' => $post,
             'categorias' => Categoria::orderBy('nombre')->get(),
@@ -43,6 +47,8 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+        Gate::authorize('update', $post);
+
         $datos = $request->validate([
             'titulo' => ['required', 'max:120'],
             'contenido' => ['required'],
@@ -55,6 +61,7 @@ class PostController extends Controller
     }
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
         $post->delete();
 
         return redirect()->route('avisos.index');
