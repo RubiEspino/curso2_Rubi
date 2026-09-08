@@ -4,31 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Aviso del blog. Version de nivelacion de la sesion 4: es la misma que
+ * construiste en las sesiones 2 y 3, sin las etiquetas del nivel avanzado.
+ */
 class Post extends Model
 {
-    protected $fillable = ['titulo', 'contenido', 'categoria_id', 'publicado'];
+    protected $fillable = ['titulo', 'contenido', 'categoria_id', 'publicado', 'user_id'];
+
+    protected $casts = [
+        'publicado' => 'boolean',
+    ];
 
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
     }
-    public function etiquetas()
+
+    public function user()
     {
-        return $this->belongsToMany(Etiqueta::class);
+        return $this->belongsTo(User::class);
     }
-    protected $casts = ['publicado' => 'boolean'];
 
     public function scopePublicados($query)
     {
         return $query->where('publicado', true);
-    }
-
-    public function scopeDeCategoria($query, $categoriaId)
-    {
-        return $query->where('categoria_id', $categoriaId);
-    }
-    public function scopeRecientes($query, $dias = 7)
-    {
-        return $query->where('created_at', '>=', now()->subDays($dias));
     }
 }
