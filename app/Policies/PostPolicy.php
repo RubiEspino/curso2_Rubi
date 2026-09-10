@@ -45,6 +45,11 @@ class PostPolicy
         return $user->id === $post->user_id;
     }
 
+    public function deleteAny(User $user): bool
+    {
+        return false;
+    }
+
     public function before(User $user, string $ability): ?bool
     {
         if ($user->rol === 'admin') {

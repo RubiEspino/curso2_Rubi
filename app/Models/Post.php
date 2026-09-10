@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
-    protected $fillable = ['titulo', 'contenido', 'categoria_id', 'publicado', 'user_id'];
+    protected $fillable = ['titulo', 'contenido', 'categoria_id', 'publicado', 'user_id', 'resumen'];
 
     protected $casts = [
         'publicado' => 'boolean',
