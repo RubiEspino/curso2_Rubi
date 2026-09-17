@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Categoria;
 use App\Models\Post;
+use App\Jobs\EnviarAvisoPorCorreo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -40,6 +41,9 @@ class PostController extends Controller
         $datos['user_id'] = $request->user()->id;
 
         $post = Post::create($datos);
+
+        EnviarAvisoPorCorreo::dispatch($post);
+
 
         return (new PostResource($post->load(['categoria', 'user'])))
             ->response()
