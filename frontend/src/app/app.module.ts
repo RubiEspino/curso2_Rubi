@@ -1,20 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './interceptores/auth.interceptor';
+
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AvisosListaComponent } from './avisos-lista/avisos-lista.component';
+import { EntrarComponent } from './entrar/entrar.component';
+import { AvisoNuevoComponent } from './aviso-nuevo/aviso-nuevo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AvisosListaComponent
+    AvisosListaComponent,
+    EntrarComponent,
+    AvisoNuevoComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

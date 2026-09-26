@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SesionService } from '../servicios/sesion.service';
 
 import { Aviso } from '../modelos/aviso';
 import { AvisosService } from '../servicios/avisos.service';

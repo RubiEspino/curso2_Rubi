@@ -8,3 +8,8 @@ export interface Aviso {
   creado: string;
 }
 
+export interface NuevoAviso {
+  titulo: string;
+  contenido: string;
+  categoria_id: number | null;
+}
