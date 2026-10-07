@@ -57,6 +57,35 @@ describe('leer avisos, sin token', function () {
                 'Avisos generales'
             );
     });
+
+    test('el endpoint lista las categorías por nombre', function () {
+        $this->getJson('/api/categorias')
+            ->assertOk()
+            ->assertJsonFragment([
+                'id' => $this->categoria->id,
+                'nombre' => 'Avisos generales',
+            ]);
+    });
+
+    test('el recurso indica si la persona autenticada puede borrar cada aviso', function () {
+        $propio = Post::factory()->create([
+            'categoria_id' => $this->categoria->id,
+            'user_id' => $this->editor->id,
+            'titulo' => 'Aviso propio',
+        ]);
+        Post::factory()->create([
+            'categoria_id' => $this->categoria->id,
+            'user_id' => User::factory()->create(['rol' => 'editor'])->id,
+            'titulo' => 'Aviso ajeno',
+        ]);
+
+        Sanctum::actingAs($this->editor);
+
+        $this->getJson('/api/avisos')
+            ->assertOk()
+            ->assertJsonFragment(['titulo' => 'Aviso propio', 'puede_borrar' => true])
+            ->assertJsonFragment(['titulo' => 'Aviso ajeno', 'puede_borrar' => false]);
+    });
 });
 
 describe('escribir avisos', function () {

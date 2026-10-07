@@ -14,8 +14,11 @@
     </div>
 
     <div class="campo">
-        <label for="categoria">Categoría (su número)</label>
-        <input id="categoria" name="categoria_id" type="number" [(ngModel)]="aviso.categoria_id">
+        <label for="categoria">Categoría (elige o ingresa su número)</label>
+        <input id="categoria" name="categoria_id" type="number" list="categorias-disponibles" [(ngModel)]="aviso.categoria_id">
+        <datalist id="categorias-disponibles">
+            <option *ngFor="let categoria of categorias" [value]="categoria.id" [label]="categoria.nombre"></option>
+        </datalist>
         <span *ngIf="errores['categoria_id']" class="error">{{ errores['categoria_id'][0] }}</span>
     </div>
 

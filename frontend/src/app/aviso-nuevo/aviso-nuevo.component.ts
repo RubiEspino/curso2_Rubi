@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { Aviso, NuevoAviso } from '../modelos/aviso';
+import { Aviso, Categoria, NuevoAviso } from '../modelos/aviso';
 import { AvisosService } from '../servicios/avisos.service';
 import { SesionService } from '../servicios/sesion.service';
 
@@ -10,15 +10,23 @@ import { SesionService } from '../servicios/sesion.service';
   templateUrl: './aviso-nuevo.component.html',
   styleUrls: ['./aviso-nuevo.component.css']
 })
-export class AvisoNuevoComponent {
+export class AvisoNuevoComponent implements OnInit {
   @Output() creado = new EventEmitter<Aviso>();
 
-  aviso: NuevoAviso = { titulo: '', contenido: '', categoria_id: 1 };
+  aviso: NuevoAviso = { titulo: '', contenido: '', categoria_id: null };
+  categorias: Categoria[] = [];
   errores: Record<string, string[]> = {};
   mensaje = '';
   enviando = false;
 
   constructor(private avisosService: AvisosService, public sesion: SesionService) { }
+
+  ngOnInit(): void {
+    this.avisosService.listarCategorias().subscribe({
+      next: categorias => this.categorias = categorias,
+      error: () => this.mensaje = 'No pude cargar las categorías; puedes ingresar su número manualmente.'
+    });
+  }
 
   guardar(): void {
     this.errores = {};
@@ -28,7 +36,7 @@ export class AvisoNuevoComponent {
       next: creado => {
         this.enviando = false;
         this.mensaje = `201 · se creó "${creado.titulo}"`;
-        this.aviso = { titulo: '', contenido: '', categoria_id: 1 };
+        this.aviso = { titulo: '', contenido: '', categoria_id: null };
         this.creado.emit(creado);
       },
       error: (e: HttpErrorResponse) => {

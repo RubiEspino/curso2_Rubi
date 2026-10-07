@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\CategoriaController;
 use App\Http\Controllers\Api\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/avisos', [PostController::class, 'index']);
 Route::get('/avisos/{post}', [PostController::class, 'show']);
 Route::get('/resumen', [PostController::class, 'resumen']);
+Route::get('/categorias', [CategoriaController::class, 'index']);
 
 Route::post('/token', [TokenController::class, 'crear'])
     ->middleware('throttle:6,1');
