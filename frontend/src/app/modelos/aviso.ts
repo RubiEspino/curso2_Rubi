@@ -2,10 +2,8 @@ export interface Aviso {
   id: number;
   titulo: string;
   contenido: string;
-  publicado: boolean;
   categoria?: { id: number; nombre: string };
   autor?: string;
-  puede_borrar: boolean;
   creado: string;
 }
 

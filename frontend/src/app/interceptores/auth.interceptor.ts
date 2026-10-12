@@ -22,9 +22,9 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.sesion.token;
     const sinToken = request.context.get(SIN_TOKEN);
 
-    if (token && !sinToken) {
+    if (token && !sinToken && !request.headers.has('Authorization')) {
       request = request.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
+        setHeaders: { Authorization: `Token ${token}` }
       });
     }
 

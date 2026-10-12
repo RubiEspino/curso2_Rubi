@@ -8,7 +8,7 @@
     <h3><a [routerLink]="['/avisos', aviso.id]">{{ aviso.titulo }}</a></h3>
     <p>{{ aviso.contenido }}</p>
     <small>{{ aviso.autor }} · {{ aviso.creado | date:'dd/MM/yyyy' }}</small>
-    <button *ngIf="aviso.puede_borrar" class="peligro" (click)="borrar(aviso)">Borrar</button>
+    <button *ngIf="sesion.token" class="peligro" (click)="borrar(aviso)">Borrar</button>
   </article>
 </div>
 

@@ -14,53 +14,48 @@ export class AvisosService {
   constructor(private http: HttpClient) { }
 
   listar(): Observable<Aviso[]> {
-    return this.http.get<{ data: Aviso[] }>('/api/avisos', {
+    return this.http.get<{ results: Aviso[] }>('/api/avisos/', {
       context: new HttpContext().set(SIN_TOKEN, true)
     }).pipe(
-      map(respuesta => respuesta.data)
+      map(respuesta => respuesta.results)
     );
   }
 
   pagina(numero: number): Observable<PaginaAvisos> {
-    return this.http.get<{ data: Aviso[]; meta: { current_page: number; last_page: number; total: number } }>(`/api/avisos?page=${numero}`, {
+    return this.http.get<{ count: number; results: Aviso[] }>(`/api/avisos/?page=${numero}`, {
       context: new HttpContext().set(SIN_TOKEN, true)
     }).pipe(
       map(respuesta => ({
-        avisos: respuesta.data,
-        actual: respuesta.meta.current_page,
-        ultima: respuesta.meta.last_page,
-        total: respuesta.meta.total
+        avisos: respuesta.results,
+        actual: numero,
+        ultima: Math.max(1, Math.ceil(respuesta.count / 10)),
+        total: respuesta.count
       }))
     );
   }
 
   uno(id: number): Observable<Aviso> {
-    return this.http.get<{ data: Aviso }>(`/api/avisos/${id}`, {
+    return this.http.get<Aviso>(`/api/avisos/${id}/`, {
       context: new HttpContext().set(SIN_TOKEN, true)
-    }).pipe(
-      map(respuesta => respuesta.data)
-    );
+    });
   }
 
   listarCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>('/api/categorias', {
+    return this.http.get<Categoria[]>('/api/categorias/', {
       context: new HttpContext().set(SIN_TOKEN, true)
     });
   }
 
   crear(aviso: NuevoAviso): Observable<Aviso> {
-    return this.http.post<{ data: Aviso }>('/api/avisos', aviso).pipe(
-      map(respuesta => respuesta.data)
-    );
+    return this.http.post<Aviso>('/api/avisos/', aviso);
   }
 
   borrar(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/avisos/${id}`);
+    return this.http.delete<void>(`/api/avisos/${id}/`);
   }
 
   actualizar(id: number, aviso: NuevoAviso): Observable<Aviso> {
-    return this.http.put<{ data: Aviso }>(`/api/avisos/${id}`, aviso).pipe(
-      map(respuesta => respuesta.data),
+    return this.http.put<Aviso>(`/api/avisos/${id}/`, aviso).pipe(
       tap(() => this.cambiosSubject.next())
     );
   }

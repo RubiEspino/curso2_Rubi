@@ -46,7 +46,7 @@ export class AvisosListaComponent implements OnInit, OnDestroy {
         this.cargando = false;
       },
       error: () => {
-        this.error = 'No pude hablar con tu API. Revisa que composer run dev siga corriendo.';
+        this.error = 'No pude hablar con Django. Revisa que la API siga corriendo en el puerto 8001.';
         this.cargando = false;
       }
     });
